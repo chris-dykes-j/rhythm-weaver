@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-    fmt.Println(createSequence(5, 2, 4))
-
+    // fmt.Println(createSequence(5, 2, 4))
 
     http.HandleFunc("/", indexHandler)
     http.ListenAndServe(":8080", nil)
@@ -46,4 +45,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
+}
+
+func imageHandler(w http.ResponseWriter, r *http.Request) {
+    // TODO: send image to client based off form data
 }
