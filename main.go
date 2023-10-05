@@ -8,9 +8,12 @@ import (
 )
 
 func main() {
-    // fmt.Println(createSequence(5, 2, 4))
+    fmt.Println(createSequence(5, 2, 4))
+
+    http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("src"))))
 
     http.HandleFunc("/", indexHandler)
+    http.HandleFunc("/image", imageHandler)
     http.ListenAndServe(":8080", nil)
 }
 
@@ -49,4 +52,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func imageHandler(w http.ResponseWriter, r *http.Request) {
     // TODO: send image to client based off form data
+    if r.Method != http.MethodGet {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    // url := fmt.Sprintf("%s", )
 }

@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Rhythm Weaver</title>
+    <script src="src/htmx.min.js"></script>
 </head>
 <body>
-    Hi mom
+    <form hx-get="/image" hx-target="#image-container">
+        <input type="number" name="notes">
+        <input type="number" name="subdivision">
+        <button type="submit">Generate Rhythm</button>
+    </form>
+
+    <div id="image-container"></div>
 </body>
 </html>
