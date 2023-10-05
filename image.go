@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/base64"
 	"fmt"
 	"image"
 	"image/draw"
@@ -10,9 +12,7 @@ import (
 	"strings"
 )
 
-// For now, let's save the image to a directory. Long term, we may just want to generate them and send them to the client if it is possible.
-// Weigh pros and cons later.
-func makeImage(sequence []bool, subDivision int, timeSignature int) {
+func makeImage(sequence []bool, subDivision int, timeSignature int) (string, error) {
 	imgs := getImageNames(sequence, subDivision)
 	notes, err := getNotesImages(imgs)
 	if err != nil {
@@ -24,10 +24,8 @@ func makeImage(sequence []bool, subDivision int, timeSignature int) {
 	for _, note := range notes {
 		length = length + note.Bounds().Dx()
 	}
-
 	img := image.NewRGBA(image.Rect(0, 0, length, height))
 
-	// Add images to canvas
 	point := image.Point{0, 0}
 	for _, note := range notes {
 		r := note.Bounds()
@@ -36,22 +34,14 @@ func makeImage(sequence []bool, subDivision int, timeSignature int) {
 		point.X = point.X + note.Bounds().Dx()
 	}
 
-	// Save image
-	path := filepath.Join("./images/result", createImageName(sequence))
-	file, err := os.Create(path)
+	var buffer bytes.Buffer
+	err = jpeg.Encode(&buffer, img, nil)
 	if err != nil {
-		fmt.Errorf("Could not create image file: %s", err)
+		return "", err
 	}
-	defer file.Close()
+	imgBase64Str := base64.StdEncoding.EncodeToString(buffer.Bytes())
 
-	opt := jpeg.Options{
-		Quality: 100,
-	}
-
-	err = jpeg.Encode(file, img, &opt)
-	if err != nil {
-		fmt.Errorf("Could not create image file: %s", err)
-	}
+	return imgBase64Str, nil
 }
 
 func getNotesImages(images []string) ([]image.Image, error) {
@@ -89,17 +79,4 @@ func getImageNames(sequence []bool, subDivision int) []string {
 		}
 	}
 	return result
-}
-
-func createImageName(sequence []bool) string {
-	var sb strings.Builder
-	for _, k := range sequence {
-		if k {
-			sb.WriteString("1")
-		} else {
-			sb.WriteString("0")
-		}
-	}
-	sb.WriteString(".jpg")
-	return sb.String()
 }
