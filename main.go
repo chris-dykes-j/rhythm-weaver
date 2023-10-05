@@ -8,11 +8,11 @@ import (
 )
 
 func main() {
-    fmt.Println(getImageNames(createSequence(5, 2, 4), 2))
-    fmt.Println(getImageNames(createSequence(5, 4, 4), 4))
-    fmt.Println(getImageNames(createSequence(5, 3, 4), 3))
-    
-    makeImage(createSequence(4, 4, 4), 4, 4)
+	fmt.Println(getImageNames(createSequence(5, 2, 4), 2))
+	fmt.Println(getImageNames(createSequence(5, 4, 4), 4))
+	fmt.Println(getImageNames(createSequence(5, 3, 4), 3))
+
+	makeImage(createSequence(4, 4, 4), 4, 4)
 
 	http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("src"))))
 
