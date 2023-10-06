@@ -45,10 +45,10 @@ func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 		if len(options) == 0 {
 			break
 		}
-		c1 := rand.Intn(len(options))             // Choose index for the first choice
+		c1 := rand.Intn(len(options))             // Choose one of the available lists for the first choice
 		x := options[c1].index                    // Grab its value
-		c2 := rand.Intn(len(options[c1].options)) // Choose with element in the array
-		y := options[c1].options[c2]              // Grab the element's value
+		c2 := rand.Intn(len(options[c1].options)) // Choose an element in the array
+		y := options[c1].options[c2]              // Grab the element's numeric value
 		result[x][y] = true                       // Assign choice
 
 		options[c1].options = append(options[c1].options[:c2], options[c1].options[c2+1:]...) // Remove option from the array
@@ -67,7 +67,7 @@ type Tuple struct {
 	options []int
 }
 
-// Createss options for the complex sequence.
+// Creates options for the complex sequence.
 func createComplexOptions(seq [][]bool) []Tuple {
 	result := make([]Tuple, len(seq))
 	for i := range result {
