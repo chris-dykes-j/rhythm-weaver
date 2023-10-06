@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+	"fmt"
 	"math/rand"
 )
 
@@ -12,9 +12,9 @@ func createSequence(notes int, subdivision int, timeSignature int) []bool {
 	result := make([]bool, length)
 
 	for notes > 0 {
-        if len(options) == 0 {
-            break
-        }
+		if len(options) == 0 {
+			break
+		}
 		i := rand.Intn(len(options))                    // Choose index for get option list.
 		choice := options[i]                            // Choose option.
 		result[choice] = true                           // Change the result's index.
@@ -34,25 +34,41 @@ func createOptions(length int) []int {
 	return options
 }
 
+func getRandomKey(m map[int][]int) int {
+    keys := make([]int, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+    return keys[rand.Intn(len(keys))]
+}
+
+func getRandomElement(array []int) int {
+    return rand.Intn(len(array))
+}
+
 // Creates a complex sequence
 func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 	result := make([][]bool, timeSignature)
 	for i := range result {
 		result[i] = make([]bool, rand.Intn(5)+1)
 	}
-	options := createComplexOptions(result) 
+	options := createComplexOptions(result)
+    fmt.Println(options)
 
 	for notes > 0 {
-		if len(options) == 0 {
-			break
+        x := getRandomKey(options)
+        y := getRandomElement(options[x])
+        choice := options[x][y]
+		if result[x][choice] == true {
+            fmt.Println(options)
+            fmt.Println(result)
+            fmt.Printf("%d, %d\n", x, y)
 		}
-		x, err := chooseNonEmptyArray(options)                        // Pick option array
-        if (err != nil) {
-            break
-        }
-		y := rand.Intn(len(options[x]))                          // Pick element in option array
 		result[x][y] = true                                      // Set option to true
 		options[x] = append(options[x][:y], options[x][y+1:]...) // Remove element from options
+        if len(options[x]) == 0 {
+            delete(options, x)
+        }
 		notes--
 	}
 
@@ -60,30 +76,11 @@ func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 }
 
 // Createss options for the complex sequence.
-func createComplexOptions(seq [][]bool) [][]int {
-	result := make([][]int, len(seq))
-	for i := range result {
-		result[i] = make([]int, len(seq[i]))
-		for k := range result[i] {
-			result[i][k] = k
-		}
+func createComplexOptions(seq [][]bool) map[int][]int {
+	result := make(map[int][]int)
+	for i, arr := range seq {
+        result[i] = createOptions(len(arr))
 	}
 
 	return result
-}
-
-func chooseNonEmptyArray(arrays [][]int) (int, error) {
-    var r []int
-    for k, array := range arrays {
-        if len(array) == 0 {
-            continue
-        } else {
-            r = append(r, k)
-        }
-    }
-    if len(r) == 0 {
-        return -1, errors.New("No more options")
-    }
-
-    return r[rand.Intn(len(r))], nil
 }
