@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -34,18 +33,6 @@ func createOptions(length int) []int {
 	return options
 }
 
-func getRandomKey(m map[int][]int) int {
-    keys := make([]int, 0, len(m))
-	for k := range m {
-		keys = append(keys, k)
-	}
-    return keys[rand.Intn(len(keys))]
-}
-
-func getRandomElement(array []int) int {
-    return rand.Intn(len(array))
-}
-
 // Creates a complex sequence
 func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 	result := make([][]bool, timeSignature)
@@ -53,34 +40,41 @@ func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 		result[i] = make([]bool, rand.Intn(5)+1)
 	}
 	options := createComplexOptions(result)
-    fmt.Println(options)
 
 	for notes > 0 {
-        x := getRandomKey(options)
-        y := getRandomElement(options[x])
-        choice := options[x][y]
-		if result[x][choice] == true {
-            fmt.Println(options)
-            fmt.Println(result)
-            fmt.Printf("%d, %d\n", x, y)
-		}
-		result[x][y] = true                                      // Set option to true
-		options[x] = append(options[x][:y], options[x][y+1:]...) // Remove element from options
-        if len(options[x]) == 0 {
-            delete(options, x)
+        if len(options) == 0 {
+            break
         }
+        choice1 := rand.Intn(len(options))
+        x := options[choice1].index
+        choice2 := rand.Intn(len(options[choice1].options))
+        y := options[choice1].options[choice2]
+        result[x][y] = true
+
+        options[choice1].options = append(options[choice1].options[:choice2], options[choice1].options[choice2+1:]...)
+        if len(options[choice1].options) == 0 {
+            options = append(options[:choice1], options[choice1+1:]...)
+        }
+
 		notes--
 	}
 
 	return result
 }
 
-// Createss options for the complex sequence.
-func createComplexOptions(seq [][]bool) map[int][]int {
-	result := make(map[int][]int)
-	for i, arr := range seq {
-        result[i] = createOptions(len(arr))
-	}
+type Tuple struct {
+    index int
+    options []int
+}
 
+// Createss options for the complex sequence.
+func createComplexOptions(seq [][]bool) []Tuple {
+    result := make([]Tuple, len(seq))
+    for i := range result {
+        result[i].index = i
+        for j := range seq[i] {
+            result[i].options = append(result[i].options, j)
+        }
+    }
 	return result
 }

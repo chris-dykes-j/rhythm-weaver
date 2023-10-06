@@ -8,19 +8,16 @@ import (
 )
 
 func main() {
-	fmt.Println(createAutoComplexSeq(20, 4))
-	fmt.Println("---")
-	fmt.Println(createAutoComplexSeq(20, 4))
-	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(5, 4))
+	fmt.Println(createAutoComplexSeq(10, 4))
+	fmt.Println(createAutoComplexSeq(15, 4))
 	fmt.Println(createAutoComplexSeq(20, 4))
 
-    /*
 	http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("src"))))
 
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/image", imageHandler)
 	http.ListenAndServe(":8080", nil)
-    */
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
