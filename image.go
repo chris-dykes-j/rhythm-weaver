@@ -7,38 +7,12 @@ import (
 	"image"
 	"image/draw"
 	"image/jpeg"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func createSequence(notes int, subdivision int, timeSignature int) []bool {
-	length := subdivision * timeSignature
-	options := createOptions(length)
-	result := make([]bool, length)
-
-	for notes > 0 {
-		i := rand.Intn(len(options))                    // Choose index for get option list.
-		choice := options[i]                            // Choose option.
-		result[choice] = true                           // Change the result's index.
-		options = append(options[:i], options[i+1:]...) // Remove option.
-		notes--
-	}
-
-	return result
-}
-
-// Creates a sequence of numbers from zero to length exclusive.
-func createOptions(length int) []int {
-	options := make([]int, length)
-	for i := range options {
-		options[i] = i
-	}
-	return options
-}
-
-func makeImage(sequence []bool, subDivision int, timeSignature int) (string, error) {
+func createImage(sequence []bool, subDivision int, timeSignature int) (string, error) {
 	imgs := getImageNames(sequence, subDivision)
 	notes, err := getNotesImages(imgs)
 	if err != nil {

@@ -8,6 +8,26 @@ import (
 )
 
 func main() {
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+	fmt.Println(createAutoComplexSeq(20, 4))
+	fmt.Println("---")
+
 	http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("src"))))
 
 	http.HandleFunc("/", indexHandler)
@@ -38,7 +58,7 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	seq := createSequence(int(notes), int(subdivision), timeSignature)
-	img, _ := makeImage(seq, int(subdivision), timeSignature)
+	img, _ := createImage(seq, int(subdivision), timeSignature)
 
 	// Send image to client
 	w.Header().Set("Content-Type", "text/html")
