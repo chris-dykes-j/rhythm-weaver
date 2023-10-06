@@ -42,19 +42,20 @@ func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 	options := createComplexOptions(result)
 
 	for notes > 0 {
-        if len(options) == 0 {
-            break
-        }
-        choice1 := rand.Intn(len(options))
-        x := options[choice1].index
-        choice2 := rand.Intn(len(options[choice1].options))
-        y := options[choice1].options[choice2]
-        result[x][y] = true
 
-        options[choice1].options = append(options[choice1].options[:choice2], options[choice1].options[choice2+1:]...)
-        if len(options[choice1].options) == 0 {
-            options = append(options[:choice1], options[choice1+1:]...)
-        }
+		if len(options) == 0 {
+			break
+		}
+		c1 := rand.Intn(len(options))
+		i := options[c1].index
+		c2 := rand.Intn(len(options[c1].options))
+		j := options[c1].options[c2]
+		result[i][j] = true
+
+		options[c1].options = append(options[c1].options[:c2], options[c1].options[c2+1:]...)
+		if len(options[c1].options) == 0 {
+			options = append(options[:c1], options[c1+1:]...)
+		}
 
 		notes--
 	}
@@ -63,18 +64,18 @@ func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
 }
 
 type Tuple struct {
-    index int
-    options []int
+	index   int
+	options []int
 }
 
 // Createss options for the complex sequence.
 func createComplexOptions(seq [][]bool) []Tuple {
-    result := make([]Tuple, len(seq))
-    for i := range result {
-        result[i].index = i
-        for j := range seq[i] {
-            result[i].options = append(result[i].options, j)
-        }
-    }
+	result := make([]Tuple, len(seq))
+	for i := range result {
+		result[i].index = i
+		for j := range seq[i] {
+			result[i].options = append(result[i].options, j)
+		}
+	}
 	return result
 }
