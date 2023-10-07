@@ -2,50 +2,25 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
-	"strconv"
+    h "rhythm/web/handlers"
+	g "rhythm/pkg/generator"
+	i "rhythm/pkg/renderer"
 )
 
 func main() {
-	fmt.Println(createAutoComplexSeq(5, 4))
-	fmt.Println(createAutoComplexSeq(10, 4))
-	fmt.Println(createAutoComplexSeq(15, 4))
-	fmt.Println(createAutoComplexSeq(20, 4))
+	sg := g.NewSequenceGenerator()
+	ir := i.NewImageRenderer()
+	app := h.NewApp(sg, ir)
 
-	http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("src"))))
+	fmt.Println(sg.CreateAutoComplexSeq(5, 4))
+	fmt.Println(sg.CreateAutoComplexSeq(10, 4))
+	fmt.Println(sg.CreateAutoComplexSeq(15, 4))
+	fmt.Println(sg.CreateAutoComplexSeq(20, 4))
 
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/image", imageHandler)
+	http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("web/src"))))
+
+	http.HandleFunc("/", app.IndexHandler)
+	http.HandleFunc("/image", app.ImageHandler)
 	http.ListenAndServe(":8080", nil)
-}
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("views/index.gohtml"))
-	err := tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func imageHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	notes, err1 := strconv.ParseInt(r.FormValue("notes"), 10, 64)
-	subdivision, err2 := strconv.ParseInt(r.FormValue("subdivision"), 10, 64)
-	timeSignature := 4
-	if err1 != nil || err2 != nil {
-		http.Error(w, "Invalid input parameters", http.StatusBadRequest)
-		return
-	}
-
-	seq := createSequence(int(notes), int(subdivision), timeSignature)
-	img, _ := createImage(seq, int(subdivision), timeSignature)
-
-	// Send image to client
-	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprintf(w, `<img src="data:image/jpg;base64,%s" alt="Generated Image">`, img)
 }

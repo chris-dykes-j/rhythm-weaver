@@ -1,4 +1,4 @@
-package main
+package image
 
 import (
 	"bytes"
@@ -12,9 +12,15 @@ import (
 	"strings"
 )
 
-func createImage(sequence []bool, subDivision int, timeSignature int) (string, error) {
-	imgs := getImageNames(sequence, subDivision)
-	notes, err := getNotesImages(imgs)
+type ImageRenderer struct{}
+
+func NewImageRenderer() *ImageRenderer {
+	return &ImageRenderer{}
+}
+
+func (ir *ImageRenderer) CreateImage(sequence []bool, subDivision int, timeSignature int) (string, error) {
+	imgs := ir.getImageNames(sequence, subDivision)
+	notes, err := ir.getNotesImages(imgs)
 	if err != nil {
 		fmt.Errorf("Could not get images: %s", err)
 	}
@@ -44,7 +50,7 @@ func createImage(sequence []bool, subDivision int, timeSignature int) (string, e
 	return imgBase64Str, nil
 }
 
-func getNotesImages(images []string) ([]image.Image, error) {
+func (ir *ImageRenderer) getNotesImages(images []string) ([]image.Image, error) {
 	var result []image.Image
 	for _, img := range images {
 		path := filepath.Join(os.Getenv("MUSIC_NOTE_DIR"), img)
@@ -63,7 +69,7 @@ func getNotesImages(images []string) ([]image.Image, error) {
 	return result, nil
 }
 
-func getImageNames(sequence []bool, subDivision int) []string {
+func (ir *ImageRenderer) getImageNames(sequence []bool, subDivision int) []string {
 	var result []string
 	var sb strings.Builder
 	for i, k := range sequence {

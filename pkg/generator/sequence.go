@@ -1,13 +1,19 @@
-package main
+package generator
 
 import (
 	"math/rand"
 )
 
+type SequenceGenerator struct{}
+
+func NewSequenceGenerator() *SequenceGenerator {
+	return &SequenceGenerator{}
+}
+
 // Creates simple sequence.
-func createSequence(notes int, subdivision int, timeSignature int) []bool {
+func (sg *SequenceGenerator) CreateSequence(notes int, subdivision int, timeSignature int) []bool {
 	length := subdivision * timeSignature
-	options := createOptions(length)
+	options := sg.createOptions(length)
 	result := make([]bool, length)
 
 	for notes > 0 {
@@ -25,7 +31,7 @@ func createSequence(notes int, subdivision int, timeSignature int) []bool {
 }
 
 // Creates a sequence of numbers from zero to length exclusive.
-func createOptions(length int) []int {
+func (sq *SequenceGenerator) createOptions(length int) []int {
 	options := make([]int, length)
 	for i := range options {
 		options[i] = i
@@ -34,12 +40,12 @@ func createOptions(length int) []int {
 }
 
 // Creates a complex sequence
-func createAutoComplexSeq(notes int, timeSignature int) [][]bool {
+func (sg *SequenceGenerator) CreateAutoComplexSeq(notes int, timeSignature int) [][]bool {
 	result := make([][]bool, timeSignature)
 	for i := range result {
 		result[i] = make([]bool, rand.Intn(5)+1)
 	}
-	options := createComplexOptions(result)
+	options := sg.createComplexOptions(result)
 
 	for notes > 0 {
 		if len(options) == 0 {
@@ -68,7 +74,7 @@ type Tuple struct {
 }
 
 // Creates options for the complex sequence.
-func createComplexOptions(seq [][]bool) []Tuple {
+func (sg *SequenceGenerator) createComplexOptions(seq [][]bool) []Tuple {
 	result := make([]Tuple, len(seq))
 	for i := range result {
 		result[i].index = i
