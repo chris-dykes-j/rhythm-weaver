@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Rhythm Weaver</title>
     <script src="src/htmx.min.js"></script>
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="icon" href="src/favicon.ico">
 </head>
 <body>
+    <h1>Rhythm Weaver</h1>
     <form hx-get="/image" hx-target="#image-container">
         <label for="notes">Number of Non-rest Notes</label>
         <input type="number" name="notes">

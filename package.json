@@ -1,0 +1,11 @@
+{
+  "name": "rhythm-weaver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
+  "scripts": {
+      "build" : "npx tailwindcss -i ./web/src/input.css -o ./web/src/styles.css"
+  },
+  "keywords": [],
+  "author": ""
+}
