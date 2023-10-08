@@ -37,14 +37,14 @@ func (app *App) ImageHandler(w http.ResponseWriter, r *http.Request) {
 
 	notes, err1 := strconv.ParseInt(r.FormValue("notes"), 10, 64)
 	subdivision, err2 := strconv.ParseInt(r.FormValue("subdivision"), 10, 64)
-	timeSignature := 4
-	if err1 != nil || err2 != nil {
+	timeSignature, err3 := strconv.ParseInt(r.FormValue("timesignature"), 10, 64)
+	if err1 != nil || err2 != nil || err3 != nil {
 		http.Error(w, "Invalid input parameters", http.StatusBadRequest)
 		return
 	}
 
-	seq := app.SequenceGenerator.CreateSequence(int(notes), int(subdivision), timeSignature)
-	img, _ := app.ImageRenderer.CreateImage(seq, int(subdivision), timeSignature)
+	seq := app.SequenceGenerator.CreateSequence(int(notes), int(subdivision), int(timeSignature))
+	img, _ := app.ImageRenderer.CreateImage(seq, int(subdivision), int(timeSignature))
 
 	// Send image to client
 	w.Header().Set("Content-Type", "text/html")

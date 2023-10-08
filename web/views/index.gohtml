@@ -7,8 +7,21 @@
 </head>
 <body>
     <form hx-get="/image" hx-target="#image-container">
+        <label for="notes">Number of Non-rest Notes</label>
         <input type="number" name="notes">
-        <input type="number" name="subdivision">
+        <label for="subdivision">Subdivision</label>
+        <select type="number" name="subdivision">
+            <option value="2">Eighths</option>
+            <option value="3">Triplets</option>
+            <option value="4">Sixteenths</option>
+        </select>
+        <label for="timesignature">Time Signature</label>
+        <select type="number" name="timesignature">
+            <option value="2">2/4</option>
+            <option value="3">3/4</option>
+            <option value="4">4/4</option>
+        </select>
+
         <button type="submit">Generate Rhythm</button>
     </form>
 
