@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./web/**/*.gohtml"],
   theme: {
-    extend: {},
+    extend: {
+        colors: {
+            "green": "#26BB81",
+        },
+    },
   },
   future: {
     hoverOnlyWhenSupported: true,
