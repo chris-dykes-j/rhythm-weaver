@@ -12,7 +12,6 @@ func main() {
 	http.Handle("/src/", http.StripPrefix("/src/", http.FileServer(http.Dir("web/src"))))
 
 	http.HandleFunc("/", app.IndexHandler)
-	http.HandleFunc("/image", app.SimpleHandler)
-	http.HandleFunc("/surprise", app.UnhingedHandler)
+	http.HandleFunc("/image", app.ImageHandler)
 	http.ListenAndServe(":8080", nil)
 }
