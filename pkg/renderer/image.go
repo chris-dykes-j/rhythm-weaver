@@ -19,7 +19,7 @@ func NewImageRenderer() *ImageRenderer {
 }
 
 func (ir *ImageRenderer) CreateImage(sequence []bool, subDivision int, timeSignature int) (string, error) {
-	imgs := ir.getImageNames(sequence, subDivision)
+	imgs := ir.getImageNames(sequence, subDivision, timeSignature)
 	notes, err := ir.getNotesImages(imgs)
 	if err != nil {
 		fmt.Errorf("Could not get images: %s", err)
@@ -69,8 +69,15 @@ func (ir *ImageRenderer) getNotesImages(images []string) ([]image.Image, error) 
 	return result, nil
 }
 
-func (ir *ImageRenderer) getImageNames(sequence []bool, subDivision int) []string {
+func (ir *ImageRenderer) getImageNames(sequence []bool, subDivision int, timeSignature int) []string {
 	var result []string
+    switch timeSignature {
+    case 4:
+        result = append(result, "44.jpg")
+    case 3:
+        result = append(result, "34.jpg")
+    }
+
 	var sb strings.Builder
 	for i, k := range sequence {
 		if k {

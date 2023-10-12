@@ -6,38 +6,46 @@
     <script src="src/htmx.min.js"></script>
     <link rel="stylesheet" href="src/styles.css">
     <link rel="icon" href="src/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet"> 
 </head>
 
-<body>
-    <h1 class="text-center text-2xl mt-8">Rhythm Weaver</h1>
+<body class="bg-off-white">
+    <h1 class="text-center text-7xl mt-24 font-fancy">Rhythm Weaver</h1>
     <form hx-get="/image" hx-target="#image-container" class="w-1/2 mt-8 mx-auto">
         <div class="mb-4">
-            <label for="notes" class="block text-gray-600">Number of Non-rest Notes</label>
-            <input type="number" name="notes" max="20" class="p-2 w-full border rounded-md">
+            <label for="notes" class="block text-gray-600">Number of Notes</label>
+            <input type="number" name="notes" value="1" min="1" max="20" class="p-2 w-full border rounded-md">
         </div>
         <div class="mb-4">
-            <label for="subdivision" class="block">Subdivision</label>
+            <label for="subdivision" class="block text-gray-600">Subdivision</label>
             <select type="number" name="subdivision" class="p-2 w-full border rounded-md">
-                <option value="2">Eighths</option>
-                <option value="3">Triplets</option>
                 <option value="4">Sixteenths</option>
+                <!-- <option value="3">Triplets</option> -->
+                <option value="2">Eighths</option>
             </select>
         </div>
         <div class="mb-12">
             <label for="timesignature" class="block text-gray-600">Time Signature</label>
             <select type="number" name="timesignature" class="p-2 w-full border rounded-md">
-                <option value="2">2/4</option>
-                <option value="3">3/4</option>
                 <option value="4">4/4</option>
+                <option value="3">3/4</option>
+                <!-- <option value="2">2/4</option> -->
             </select>
         </div>
 
         <div class="flex flex-row justify-center">
-            <button type="submit" name="action" value="simple" class="rounded bg-green text-white p-2 mx-2 w-48">Generate Rhythm</button>
-            <button type="submit" name="action" value="complex" class="rounded bg-green text-white p-2 mx-2 w-48">Surprise Me</button>
+            <button type="submit" name="action" value="simple" class="rounded bg-black hover:bg-gray-600 text-white font-bold p-2 mx-2 w-48">Generate Rhythm</button>
+            <button type="submit" name="action" value="complex" class="rounded bg-black hover:bg-gray-600 text-white font-bold p-2 mx-2 w-48">Surprise Me</button>
         </div>
     </form>
 
-    <div id="image-container" class="flex justify-center mt-8"></div>
+    <div class="flex justify-center mt-8">
+        <div id="image-container" class="flex justify-center items-center border border-black h-[220px] w-1/2 p-6">
+            <p class="text-4xl font-fancy">Awaiting your command...</p>
+        </div>
+    </div>
+
 </body>
 </html>

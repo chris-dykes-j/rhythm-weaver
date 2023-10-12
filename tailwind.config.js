@@ -4,8 +4,12 @@ module.exports = {
   theme: {
     extend: {
         colors: {
-            "green": "#26BB81",
+            // "green": "#18a867", //"#26BB81",
+            "off-white": "#f7f7f5" // "#FAF3E0"// "#e8e6e1"
         },
+        fontFamily: {
+            "fancy": ["Great Vibes", "cursive"],
+        }
     },
   },
   future: {
